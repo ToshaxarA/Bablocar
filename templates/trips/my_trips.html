@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Мои поездки
+{% endblock %}
+
+{% block head%}
+{% include 'include/yandex_api_form.html' %}
+{% endblock%}
+
+{% block header %}
+{% include 'include/search_form.html' %}
+{% endblock %}
+
+{% block main %}
+
+
+  <div class="my-trips-container">
+    <h1 class="page-title">Мои поездки</h1>
+
+    <div class="tabs">
+      <button class="tab-link active" onclick="openTab(event, 'booked')">Забронированные</button>
+      <button class="tab-link" onclick="openTab(event, 'created')">Созданные мной</button>
+    </div>
+
+    <div id="booked" class="tab active">
+      {% for trip in passenger %}
+      <a href="{% url 'trip-detail' trip.id %}">
+        <div class="card">
+            <h2>Откуда: {{ trip.locale_from }}</h2>
+            <h2>Куда: {{ trip.locale_to }}</h2>
+            <h3>Дата: {{ trip.date }}</h3>
+            <h3>Время: {{ trip.time }}</h3>
+              {% if trip.is_finished %}
+                <span class="completed">Завершенная</span>
+              {% endif %}
+              {% if trip.in_process %}
+                <span class="in-progress">В пути</span>
+              {% endif %}
+              {% if not trip.in_process and not trip.is_finished %}
+                <span class="bron">Забронированная</span>
+              {% endif %}
+        </div>
+        </a>
+      {% endfor %}
+    </div>
+
+    <div id="created" class="tab">
+      {% for trip in own %}
+      <a href="{% url 'trip-detail' trip.id %}">
+        <div class="card">
+            <h2>Откуда: {{ trip.locale_from }}</h2>
+            <h2>Куда: {{ trip.locale_to }}</h2>
+            <h3>Дата: {{ trip.date }}</h3>
+            <h3>Время: {{ trip.time }}</h3>
+              {% if trip.is_finished %}
+                <span class="completed">Завершённая</span>
+              {% endif %}
+              {% if trip.in_process %}
+                <span class="in-progress">В пути</span>
+              {% endif %}
+              {% if not trip.in_process and not trip.is_finished %}
+                <span class="cancelled">Не начата</span>
+              {% endif %}
+        </div>
+        </a>
+      {% endfor %}
+    </div>
+
+  </div>
+
+
+{% endblock%}
+
+{% block js %}
+<script src="{% static 'js/my_trips.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+О нас
+{% endblock %}
+
+{% block head%}
+{% include 'include/yandex_api_form.html' %}
+{% endblock%}
+
+{% block header %}
+{% include 'include/search_form.html' %}
+{% endblock %}
+
+{% block main %}
+  <div class="contact-us">
+      <div class="contact-us-card">
+        <img src="{% static 'img/contacts.png' %}" alt="Контакты">
+        <div class="contact-us-content">
+          <h1>Контакты</h1>
+          <p>Телефон: 911</p>
+          <p>Email: info@example.com</p>
+          <p>Адрес: г. Москва, ул. Пушкина, дом Колотушкина</p>
+        </div>
+      </div>
+    </div>
+{% endblock%}

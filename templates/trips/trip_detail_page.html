@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load my_tags %}
+
+{% block title %}
+Вход
+{% endblock %}
+
+{% block head%}
+{% include 'include/yandex_api_form.html' %}
+{% endblock%}
+
+
+{% block header %}
+{% include 'include/search_form.html' %}
+{% endblock %}
+
+{% block main %}
+<div class="trip-card">
+  <div class="trip-card-content">
+    <h2>{{ trip }}</h2>
+    <p>Дата: {{ trip.date }}</p>
+    <p>Время: {{ trip.time }}</p>
+    <p>Свободные места: {{ trip.empty_spaces }}</p>
+     <div class="trip-features">
+      <div class="trip-feature-smoke">{{ trip.can_smoke|trip_tag }}</div>
+      <div class="trip-feature-animals">{{ trip.with_animals|trip_tag }}</div>
+    </div>
+  </div>
+  <div class="trip-card-footer">
+        {% if is_owner %}
+            {% if not trip.is_finished %}
+                {% if trip.in_process %}
+                    <a href="{% url 'end-trip' trip.id %}">
+                        <button class="button">Завершить</button>
+                    </a>
+                {% else %}
+                    <a href="{% url 'delete-trip' trip.id %}">
+                        <button class="button">Удалить</button>
+                    </a>
+                    <a href="{% url 'start-trip' trip.id %}">
+                        <button class="button">Начать</button>
+                    </a>
+                {% endif %}
+            {% endif %}
+        {% else %}
+            {% if trip.empty_spaces > 0 %}
+                {% if have_sit %}
+                    {% if not trip.is_finished and not trip.in_process %}
+                        <a href="{% url 'cancel-trip' trip.id %}">
+                            <button class="button">Отменить бронь</button>
+                        </a>
+                        <form action="{% url 'create-chat' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" id="riciver_id" name="riciver_id" value="{{ trip.owner.id }}" />
+                                <button type="submit" class="button">Написать водителю</button>
+                            </form>
+                    {% endif %}
+                {% else %}
+                    {% if not trip.is_finished and not trip.in_process %}
+                        <a href="{% url 'book-trip' trip.id %}">
+                            <button class="button">Забронировать поездку</button>
+                        </a>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        {% endif %}
+  </div>
+    <div class="driver-card">
+    <h2>Водитель:</h2>
+    <a href="{% url 'profile' trip.owner.id %}">
+      <img class="driver-avatar" src="{{ trip.owner.profile_photo.url }}" alt="Фото водителя">
+    </a>
+    <p class="driver-name">{{ trip.owner.base_user.username }}</p>
+</div>
+    <div class="passengers-card">
+    <h2>Пассажиры:</h2>
+    <div class="passenger-list">
+      {% if has_passengers %}
+        {% for passenger_profile in passengers_profiles %}
+          <div class="passenger">
+            <a href="{% url 'profile' passenger_profile.base_user.id %}">
+              <img class="passenger-avatar" src="{{ passenger_profile.profile_photo.url }}" alt="Аватар пассажира">
+            </a>
+            <p class="passenger-name">{{ passenger_profile.base_user.username }}</p>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p>Пассажиров пока нет...</p>
+      {% endif %}
+      <!------------------------------------------>
+    </div>
+  </div>
+      </div>
+{% endblock%}
+
+

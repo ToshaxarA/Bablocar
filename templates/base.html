@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    {% block title %}
+    {% endblock %}
+  </title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  {% block head %}
+  {% endblock%}
+</head>
+<body>
+  <header>
+    <nav>
+
+      
+      <ul class="navigation-menu">
+        <li><a href="{% url 'index-page' %}">Главная</a></li>
+        <li><a href="{% url 'how-it-works' %}">Как это работает</a></li>
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'add-trip' %}">Добавить поездку</a></li>
+        <li><a href="{% url 'profile' request.user.user_profile.id %}">Профиль</a></li>
+        <li><a href="{% url 'my-trips' %}">Мои поездки</a></li>
+        <li><a href="{% url 'my-messages' %}">Мои диалоги</a></li>
+        <li><a href="{% url 'logout' %}">Выход</a></li>
+        {% else %}
+        <li><a href="{% url 'register' %}">Регистрация</a></li>
+        <li><a href="{% url 'login' %}">Вход</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+    <div class="hero">
+      <h1>Поездки с компанией по низким ценам</h1>
+      <p>Для тех, кто любит поговорить и не хочет переплачивать</p>
+    </div>
+    {% block header %}
+    {% endblock %}
+  </header>
+
+  <main>
+    {% block main %}
+    {% endblock%}
+  </main>
+
+  <footer>
+  <div class="footer-menu">
+    <ul>
+      <li><a href="{% url 'about-us' %}">О нас</a></li>
+      <li><a href="{% url 'contacts' %}">Контакты</a></li>
+      <li><a href="{% url 'terms-of-use' %}">Условия использования</a></li>
+      <li><a href="{% url 'privacy-policy' %}">Политика конфиденциальности</a></li>
+    </ul>
+  </div>
+</footer>
+{% block js %}
+
+{% endblock %}
+</body>
+</html>

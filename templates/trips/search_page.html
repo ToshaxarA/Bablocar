@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load my_tags %}
+
+{% block title %}
+Результаты поиска
+{% endblock %}
+
+{% block head%}
+{% include 'include/yandex_api_form.html' %}
+{% endblock%}
+
+{% block header %}
+      {% include 'include/search_form.html' %}
+{% endblock %}
+
+{% block main %}
+    <div class="hero1">
+      <h1 class="search-heading">
+          {% if is_lucky %}
+            {% if is_search_had_result %}
+                {% if date_correct %}
+                    Результаты поиска:
+                {% else %}
+                    На эту дату поездок нет, посмотрите поездки на другие даты:
+                {% endif %}
+            {% else %}
+                Поездок нет...
+            {% endif %}
+          {% else %}
+            {{ error }}
+          {% endif %}
+      </h1>
+    </div>
+        {% if is_lucky %}
+            {% if is_search_had_result %}
+                <section class="search-results">
+                    {% for trip in result %}
+                      <div class="result">
+                        <a href="{% url 'trip-detail' trip.id %}">
+                          <div class="result-content">
+                            <h2 class="result-title">{{ trip }}</h2>
+                            <p class="result-info"><span class="bold-text">Дата:</span> {{ trip.date }}</p>
+                            <p class="result-info"><span class="bold-text">Время:</span> {{ trip.time }}</p>
+                            <p class="result-info"><span class="bold-text">Свободные места:</span> {{ trip.empty_spaces }}</p>
+                              <div class="trip-features">
+                                <div class="trip-feature-smoke">{{ trip.can_smoke|trip_tag }}</div>
+                                <div class="trip-feature-animals">{{ trip.with_animals|trip_tag }}</div>
+                              </div>
+                          </div>
+                        </a>
+                      </div>
+                    {% endfor %}
+                    </section>
+            {% endif %}
+        {% endif %}
+
+{% if not is_lucky %}
+    {% include 'include/features.html' %}
+    {% include 'include/how_it_works.html' %}
+{% else %}
+    {% if not is_search_had_result %}
+        {% include 'include/features.html' %}
+        {% include 'include/how_it_works.html' %}
+    {% endif %}
+{% endif %}
+
+{% endblock %}
+
+

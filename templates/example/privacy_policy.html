@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+О нас
+{% endblock %}
+
+{% block head%}
+{% include 'include/yandex_api_form.html' %}
+{% endblock%}
+
+{% block header %}
+{% include 'include/search_form.html' %}
+{% endblock %}
+
+{% block main %}
+<div class="privacy-policy">
+      <div class="privacy-policy-card">
+        <div class="privacy-policy-content">
+          <h1>Политика конфиденциальности</h1>
+          <p>Все права защищены</p>
+          <p>Что было в поездке - остаётся в поездке</p>
+          <p>Перевозчик не задаёт вопросов о грузе</p>
+        </div>
+      </div>
+    </div>
+{% endblock%}

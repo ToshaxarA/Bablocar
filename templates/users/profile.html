@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% load my_tags %}
+
+{% block title %}
+Профиль
+{% endblock %}
+
+{% block head%}
+{% endblock%}
+
+{% block header %}
+{% endblock %}
+
+{% block main %}
+
+<div class="profile">
+  <div class="profile-content">
+    <div class="profile-info">
+      <img src="{{ profile.profile_photo.url }}" alt=" " class="profile-photo">
+      <h3>{{ profile.base_user.username }}</h3>
+      <div class="preferences-card">
+        <h4>Предпочтения в поездке</h4>
+        <ul>
+          <li><strong>Разговорчивость:</strong> {{ profile.prefer_conversations|users_tag }}</li>
+          <li><strong>Музыка:</strong> {{ profile.prefer_music|users_tag }}</li>
+          <li><strong>Курение:</strong> {{ profile.prefer_smoke|users_tag }}</li>
+          <li><strong>Животные:</strong> {{ profile.prefer_animals|users_tag }}</li>
+        </ul>
+      </div>
+      {% if profile.base_user.id == user.id %}
+      <div class="edit-profile">
+        <a href="{% url 'edit-profile' %}" class="edit-profile-button">Редактировать профиль</a>
+      </div>
+      {% else %}
+        <div class="edit-profile">
+          <form action="{% url 'create-chat' %}" method="post">
+            {% csrf_token %}
+              <input type="hidden" id="riciver_id" name="riciver_id" value="{{ profile.id }}" />
+              <button type="submit" class="edit-profile-button">Написать пользователю</button>
+            </form>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock%}
