@@ -7,8 +7,19 @@ from django.urls import reverse_lazy
 from trips.forms import AddTripForm
 from users.models import Profile
 
+from django.conf import settings
+from django.shortcuts import render
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+
 
 # Create your views here.
+@api_view(['GET'])
+def api_key_view(request):
+    api_key = settings.YANDEX_API_KEY
+    return Response({'api_key': api_key})
+
 def my_trips(request):
     if not request.user.is_authenticated:
         return redirect('not-register')

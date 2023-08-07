@@ -8,8 +8,6 @@ from yandex_geocoder.exceptions import NothingFound
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 ya_api_key = os.environ.get('API_YANDEX_GEO')
 
-
-
 locality_names = ['locality', 'area', 'province', 'district', 'house', 'country']
 
 
@@ -84,4 +82,3 @@ def get_locality_name(code):
             return adr
     else:
         return description
-
