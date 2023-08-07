@@ -1,12 +1,14 @@
 from yandex_geocoder import Client, exceptions
 import os
 from dotenv import load_dotenv
-from core.settings import BASE_DIR
+#from core.settings import BASE_DIR
 from decimal import Decimal
 from yandex_geocoder.exceptions import NothingFound
 
-load_dotenv(os.path.join(BASE_DIR, '.env'))
-ya_api_key = os.environ.get('API_YANDEX_GEO')
+"""load_dotenv(os.path.join(BASE_DIR, '.env'))
+ya_api_key = os.environ.get('API_YANDEX_GEO')"""
+
+ya_api_key = "e597a9d9-5443-4eca-8b7a-0a29b3892260"
 
 locality_names = ['locality', 'area', 'province', 'district', 'house', 'country']
 
@@ -82,5 +84,4 @@ def get_locality_name(code):
             return adr
     else:
         return description
-
 
